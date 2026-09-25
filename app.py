@@ -272,7 +272,13 @@ def admin_login(password: str = Form(...)):
     token = secrets.token_urlsafe(32)
     SESSIONS.add(token)
     res = RedirectResponse("/admin", status_code=303)
-    res.set_cookie("cp_admin", token, httponly=True, samesite="lax")
+    res.set_cookie(
+        "cp_admin",
+        token,
+        httponly=True,
+        samesite="lax",
+        secure=os.environ.get("RENDER") == "true",
+    )
     return res
 
 
