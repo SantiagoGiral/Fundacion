@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin — Colombia Prospera</title>
+  <style>
+    body{font-family:Inter,system-ui,sans-serif;background:#F8FAF8;color:#103C34;display:grid;place-items:center;min-height:100vh;margin:0}
+    form{background:#fff;padding:28px;border-radius:18px;box-shadow:0 12px 35px rgba(16,60,52,.1);width:min(360px,92vw)}
+    h1{font-size:20px;margin:0 0 16px}
+    input,button{width:100%;padding:10px 12px;border-radius:12px;border:1px solid #dce5df;font:inherit;box-sizing:border-box}
+    button{margin-top:12px;background:#246A43;color:#fff;border:0;font-weight:700;cursor:pointer}
+    .err{color:#9b2c2c;font-size:13px}
+  </style>
+</head>
+<body>
+  <form method="post" action="/admin/login">
+    <h1>Panel de la fundación</h1>
+    <p>Contraseña local: <code>admin</code></p>
+    <input type="password" name="password" placeholder="Contraseña" required>
+    __ERROR__
+    <button type="submit">Entrar</button>
+  </form>
+</body>
+</html>

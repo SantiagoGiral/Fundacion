@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colombia Prospera — Fundación</title>
+  <meta name="description" content="Colombia Prospera — Fundación">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --forest:#103C34;
+      --mid:#246A43;
+      --leaf:#4C8F51;
+      --sage:#3F795F;
+      --soft:#F8FAF8;
+      --white:#FFFFFF;
+      --ink:#1a332d;
+      --muted:#5d746c;
+      --line:#dce5df;
+      --shadow:0 12px 35px rgba(16,60,52,.10);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:96px}
+    [hidden]{display:none!important}
+    section[id]{scroll-margin-top:96px}
+    body{
+      margin:0;
+      background:var(--soft);
+      color:var(--ink);
+      font-family:Inter,ui-sans-serif,system-ui,sans-serif;
+      line-height:1.5;
+    }
+    a{color:inherit}
+    button,input,select,textarea{font:inherit}
+    img{max-width:100%;display:block}
+    .page{width:100%;overflow-x:hidden}
+    .skip{
+      position:absolute;left:-999px;top:8px;background:var(--forest);color:#fff;
+      padding:8px 14px;border-radius:8px;z-index:100
+    }
+    .skip:focus{left:12px}
+
+    .nav{
+      position:fixed;z-index:20;top:14px;left:50%;transform:translateX(-50%);
+      width:min(1260px,calc(100% - 32px));height:72px;
+      background:rgba(255,255,255,.94);backdrop-filter:blur(10px);
+      border-radius:22px;
+      display:flex;align-items:center;justify-content:space-between;padding:0 18px 0 12px;
+      box-shadow:var(--shadow);
+    }
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo{
+      width:48px;height:48px;border-radius:50% 50% 45% 55%;
+      background:var(--forest);position:relative;flex-shrink:0;
+    }
+    .logo:before,.logo:after{
+      content:"";position:absolute;background:var(--white);border-radius:100% 0 100% 0;
+    }
+    .logo:before{width:18px;height:28px;left:10px;top:9px;transform:rotate(-28deg)}
+    .logo:after{width:13px;height:22px;right:9px;top:8px;transform:rotate(24deg)}
+    .brand-name{font-weight:800;font-size:14px;line-height:1.1;color:var(--forest)}
+    .brand-name small{display:block;font-weight:600;letter-spacing:.12em;font-size:9px;opacity:.7}
+    .navlinks{display:flex;gap:22px;align-items:center}
+    .navlinks a{
+      text-decoration:none;font-size:14px;color:var(--forest);white-space:nowrap;
+      padding:6px 0;border-bottom:2px solid transparent;
+    }
+    .navlinks a.active,.navlinks a:hover{border-bottom-color:var(--forest);font-weight:700}
+    .nav-actions{display:flex;align-items:center;gap:10px}
+    .navcta,.btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      height:40px;padding:0 18px;border-radius:24px;border:0;cursor:pointer;
+      background:var(--mid);color:#fff;font-size:13px;font-weight:700;text-decoration:none;
+    }
+    .btn.ghost{background:#fff;color:var(--forest);border:1px solid var(--line)}
+    .btn.wide{height:48px;padding:0 24px;border-radius:30px;font-size:15px}
+    .menu-btn{
+      display:none;width:40px;height:40px;border:0;border-radius:50%;
+      background:#e5ece7;cursor:pointer;
+    }
+    .menu-btn span{display:block;width:16px;height:2px;background:var(--forest);margin:3px auto}
+
+    .hero{
+      min-height:92vh;position:relative;display:flex;align-items:center;
+      color:#fff;overflow:hidden;
+    }
+    .hero-slide{
+      position:absolute;inset:0;background:#1a4a3e center/cover no-repeat;
+      opacity:0;transition:opacity .8s ease;
+    }
+    .hero-slide.active{opacity:1}
+    .hero:after{
+      content:"";position:absolute;left:-5%;right:-5%;bottom:-1px;height:72px;
+      background:var(--soft);border-radius:55% 55% 0 0/100% 100% 0 0;z-index:1;
+    }
+    .hero-overlay{
+      position:absolute;inset:0;
+      background:linear-gradient(90deg,rgba(16,60,52,.72),rgba(16,60,52,.28) 55%,rgba(16,60,52,.4));
+    }
+    .hero-content{position:relative;z-index:2;margin-left:11%;margin-top:45px;max-width:460px}
+    .hero-kicker{font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:16px}
+    .hero h1{font-size:clamp(42px,7vw,72px);line-height:.92;margin:0;letter-spacing:-.045em}
+    .hero-copy{font-size:18px;max-width:360px;margin:22px 0 0}
+    .cta{
+      margin-top:30px;height:54px;padding:0 26px;border-radius:30px;border:0;
+      background:var(--mid);box-shadow:0 12px 24px rgba(16,60,52,.22);
+      color:#fff;font-size:15px;font-weight:700;cursor:pointer;
+      display:inline-flex;align-items:center;gap:12px;text-decoration:none;
+    }
+    .dots{position:absolute;z-index:3;bottom:82px;left:50%;transform:translateX(-50%);display:flex;gap:9px}
+    .dots button{
+      width:10px;height:10px;border-radius:50%;border:0;padding:0;background:#fff;opacity:.65;cursor:pointer
+    }
+    .dots button.active{background:var(--mid);opacity:1}
+
+    .icon-strip{
+      position:relative;z-index:3;margin:-5px auto 0;width:min(1160px,calc(100% - 40px));
+      display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:25px 0 48px;
+    }
+    .icon-item{
+      text-align:center;text-decoration:none;color:var(--forest);padding:8px;
+      border-radius:16px;transition:transform .2s,background .2s;
+    }
+    .icon-item:hover{transform:translateY(-4px);background:#fff}
+    .icon-circle{
+      margin:auto;width:96px;height:96px;border-radius:50%;
+      background:#edf4ef;display:grid;place-items:center;
+    }
+    .icon{width:49px;height:49px;stroke:var(--mid);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+    .icon-item span{display:block;margin-top:14px;font-size:14px;font-weight:650}
+
+    .section{padding:110px 7% 72px;position:relative}
+    .section h2{font-size:clamp(26px,3vw,34px);color:var(--forest);margin:0 0 12px}
+    .lead{color:var(--muted);max-width:640px;margin:0 0 28px}
+    .leaf-deco{
+      position:absolute;width:180px;height:260px;left:-60px;top:0;opacity:.13;
+      background:var(--leaf);border-radius:100% 0 100% 0;transform:rotate(35deg);pointer-events:none
+    }
+    .impact-grid{max-width:1180px;margin:auto;display:grid;grid-template-columns:1fr 2fr;gap:44px;align-items:stretch}
+    .impact-photo{
+      min-height:330px;border-radius:30px;overflow:hidden;
+      background:#143f36 center/cover no-repeat;
+    }
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{
+      background:var(--white);border-radius:18px;min-height:240px;padding:25px 18px;
+      box-shadow:var(--shadow);border-top:3px solid var(--leaf);
+      display:flex;flex-direction:column;align-items:center;text-align:center
+    }
+    .card-icon{width:74px;height:74px;border-radius:50%;background:#f0f6f1;display:grid;place-items:center;margin-bottom:18px}
+    .card-label{font-size:14px;margin-bottom:10px}
+    .number{min-width:82px;height:32px;padding:0 12px;border-radius:18px;background:var(--forest);color:#fff;font-size:14px;font-weight:700;display:grid;place-items:center}
+
+    .about-grid,.help-grid,.news-grid{
+      max-width:1180px;margin:auto;display:grid;gap:22px
+    }
+    .about-grid{grid-template-columns:1.1fr .9fr}
+    .help-grid{grid-template-columns:repeat(3,1fr)}
+    .news-grid{grid-template-columns:repeat(3,1fr)}
+    .panel{
+      background:#fff;border-radius:22px;padding:28px;box-shadow:var(--shadow)
+    }
+    .panel h3{margin:0 0 10px;color:var(--forest)}
+    .pill-list{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0;padding:0;list-style:none}
+    .pill-list li{background:#edf4ef;color:var(--forest);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+
+    .help-card{
+      background:#fff;border-radius:22px;padding:24px;box-shadow:var(--shadow);
+      display:flex;flex-direction:column;gap:10px
+    }
+    .help-card strong{color:var(--forest);font-size:18px}
+    .amount-row{display:flex;flex-wrap:wrap;gap:8px}
+    .amount-row button{
+      border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;cursor:pointer;font-weight:650
+    }
+    .amount-row button.selected,.amount-row button:hover{background:var(--mid);color:#fff;border-color:var(--mid)}
+    .field{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+    .field label{font-size:13px;font-weight:600;color:var(--forest)}
+    .field input,.field textarea,.field select{
+      border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff
+    }
+    .hint{font-size:12px;color:var(--muted)}
+    .ok{color:var(--mid);font-weight:650}
+    .err{color:#9b2c2c;font-weight:650}
+
+    .tile{
+      height:205px;border-radius:24px;position:relative;overflow:hidden;
+      background-size:cover;background-position:center;box-shadow:var(--shadow);
+      display:block;text-decoration:none;color:#fff
+    }
+    .tile:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(16,60,52,.7),transparent 65%)}
+    .tile .tbar,.tile .tbar2,.tile .arrow{position:absolute;z-index:2}
+    .tile .tbar{left:25px;bottom:37px;font-size:16px;font-weight:700}
+    .tile .tbar2{left:25px;bottom:17px;font-size:12px;opacity:.9}
+    .arrow{
+      right:18px;bottom:18px;width:34px;height:34px;border-radius:50%;background:var(--mid);
+      display:grid;place-items:center
+    }
+    .tiles{max-width:1320px;margin:0 auto;padding:10px 30px 55px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+
+    .news-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);text-decoration:none;color:inherit}
+    .news-card img{height:150px;width:100%;object-fit:cover}
+    .news-card div{padding:16px}
+    .news-card time{font-size:12px;color:var(--muted)}
+    .news-card h3{margin:6px 0;font-size:16px;color:var(--forest)}
+
+    .contact-wrap{max-width:1180px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .footer{
+      min-height:170px;background:var(--forest);padding:35px 7%;color:#c9ddd4;
+      display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap
+    }
+    .footer a{color:#c9ddd4;text-decoration:none;font-size:13px}
+    .footer-logo{width:58px;height:58px;border-radius:50%;background:#fff;position:relative}
+    .footer-logo:before,.footer-logo:after{
+      content:"";position:absolute;background:var(--forest);border-radius:100% 0 100% 0
+    }
+    .footer-logo:before{width:18px;height:28px;left:14px;top:13px;transform:rotate(-28deg)}
+    .footer-logo:after{width:13px;height:22px;right:13px;top:12px;transform:rotate(24deg)}
+    .footer-lines{display:flex;gap:18px;flex-wrap:wrap}
+    .social{display:flex;gap:12px}
+    .social a{width:34px;height:34px;border-radius:50%;background:#5e8171;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:800}
+    .news-form{display:flex;gap:6px;align-items:center}
+    .news-form input{
+      height:40px;border:1px solid #78988a;border-radius:24px;background:transparent;color:#fff;padding:0 16px;width:210px
+    }
+    .news-form button{
+      width:40px;height:40px;border:0;border-radius:50%;background:var(--leaf);color:#fff;cursor:pointer;font-weight:800
+    }
+
+    .toast{
+      position:fixed;right:18px;bottom:18px;z-index:50;background:var(--forest);color:#fff;
+      padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);transform:translateY(120%);
+      transition:transform .25s ease;max-width:280px
+    }
+    .toast.show{transform:none}
+
+    .modal{
+      position:fixed;inset:0;background:rgba(16,60,52,.45);z-index:40;display:none;
+      align-items:center;justify-content:center;padding:20px
+    }
+    .modal.open{display:flex}
+    .modal-card{background:#fff;border-radius:20px;max-width:420px;width:100%;padding:24px;position:relative}
+    .modal-card h3{margin-top:0;color:var(--forest)}
+    .close-x{position:absolute;right:12px;top:10px;border:0;background:none;font-size:22px;cursor:pointer}
+
+    @media(max-width:900px){
+      .navlinks{display:none;position:absolute;top:80px;left:0;right:0;background:#fff;border-radius:16px;
+        flex-direction:column;padding:16px;gap:12px;box-shadow:var(--shadow)}
+      .navlinks.open{display:flex}
+      .menu-btn{display:block}
+      .hero-content{margin-left:7%;width:86%}
+      .icon-strip,.help-grid,.news-grid,.tiles,.about-grid,.impact-grid,.contact-wrap{grid-template-columns:1fr}
+      .cards{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<a class="skip" href="#inicio">Saltar al contenido</a>
+<div class="page">
+  <nav class="nav" aria-label="Principal">
+    <a class="brand" href="#inicio">
+      <div class="logo" aria-hidden="true"></div>
+      <div class="brand-name">Colombia Prospera<small>FUNDACIÓN</small></div>
+    </a>
+    <div class="navlinks" id="navlinks">
+      <a href="#inicio" data-nav>Inicio</a>
+      <a href="#quienes" data-nav>Quiénes somos</a>
+      <a href="#hacemos" data-nav>Qué hacemos</a>
+      <a href="#noticias" data-nav>Noticias</a>
+      <a href="#contacto" data-nav>Contacto</a>
+    </div>
+    <div class="nav-actions">
+      <a class="navcta" href="#ayudar">Apoyar</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <section class="hero" id="inicio">
+    <div class="hero-slide active" style="background-image:url('/static/hero-1.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('/static/hero-2.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('/static/hero-3.jpg')"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-kicker">Fundación sin ánimo de lucro</div>
+      <h1>Colombia<br>Prospera</h1>
+      <p class="hero-copy">Breve presentación de la fundación y su propósito.</p>
+      <a class="cta" href="#quienes">Conoce más <b>→</b></a>
+    </div>
+    <div class="dots" id="heroDots"></div>
+  </section>
+
+  <section class="icon-strip" aria-label="Accesos rápidos">
+    <a class="icon-item" href="#hacemos">
+      <div class="icon-circle"><svg class="icon" viewBox="0 0 48 48"><circle cx="24" cy="15" r="6"/><path d="M13 35c0-6 5-10 11-10s11 4 11 10"/><path d="M8 34c0-4 3-7 7-7M40 34c0-4-3-7-7-7"/></svg></div>
+      <span>Nuestra causa</span>
+    </a>
+    <a class="icon-item" href="#ayudar">
+      <div class="icon-circle"><svg class="icon" viewBox="0 0 48 48"><path d="M24 39S9 29 9 18c0-5 4-8 8-8 3 0 6 2 7 5 1-3 4-5 7-5 4 0 8 3 8 8 0 11-15 21-15 21z"/><path d="M9 39h17"/></svg></div>
+      <span>Cómo ayudar</span>
+    </a>
+    <a class="icon-item" href="#impacto">
+      <div class="icon-circle"><svg class="icon" viewBox="0 0 48 48"><path d="M24 40V17"/><path d="M24 25c-7 0-10-5-10-10 7 0 10 5 10 10z"/><path d="M24 20c7 0 10-5 10-10-7 0-10 5-10 10z"/><path d="M24 32c7 0 11-4 12-10-7 0-11 4-12 10z"/></svg></div>
+      <span>Nuestro impacto</span>
+    </a>
+    <a class="icon-item" href="#noticias">
+      <div class="icon-circle"><svg class="icon" viewBox="0 0 48 48"><path d="M8 38l9-18 7 10 7-15 9 23"/><path d="M31 10v8M27 14h8"/><circle cx="31" cy="10" r="2"/></svg></div>
+      <span>Comunidad</span>
+    </a>
+  </section>
+
+  <section class="section" id="impacto">
+    <div class="leaf-deco"></div>
+    <div class="impact-grid">
+      <div class="impact-photo" style="background-image:url('/static/impact.jpg')"></div>
+      <div class="cards">
+        <article class="card">
+          <div class="card-icon"><svg class="icon" viewBox="0 0 48 48"><circle cx="24" cy="15" r="6"/><path d="M13 35c0-6 5-10 11-10s11 4 11 10"/></svg></div>
+          <div class="card-label">Personas beneficiadas</div>
+          <div class="number">00</div>
+        </article>
+        <article class="card">
+          <div class="card-icon"><svg class="icon" viewBox="0 0 48 48"><path d="M24 40V17"/><path d="M24 25c-7 0-10-5-10-10 7 0 10 5 10 10z"/></svg></div>
+          <div class="card-label">Proyectos realizados</div>
+          <div class="number">00</div>
+        </article>
+        <article class="card">
+          <div class="card-icon"><svg class="icon" viewBox="0 0 48 48"><path d="M24 40s-12-9-12-19a12 12 0 0 1 24 0c0 10-12 19-12 19z"/><circle cx="24" cy="21" r="3"/></svg></div>
+          <div class="card-label">Comunidades alcanzadas</div>
+          <div class="number">00</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quienes">
+    <h2>Quiénes somos</h2>
+    <p class="lead">Texto de referencia. Descripción breve de la fundación.</p>
+    <div class="about-grid">
+      <div class="panel">
+        <h3>Nuestra misión</h3>
+        <p>Texto de referencia. Párrafo de misión pendiente de definir.</p>
+        <ul class="pill-list">
+          <li>Línea 1</li>
+          <li>Línea 2</li>
+          <li>Línea 3</li>
+          <li>Línea 4</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Cómo trabajamos</h3>
+        <p>Texto de referencia. Párrafo de enfoque de trabajo pendiente de definir.</p>
+        <p class="hint">Nota de referencia.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="hacemos">
+    <h2>Qué hacemos</h2>
+    <p class="lead">Texto de referencia. Resumen de programas o líneas de acción.</p>
+    <div class="tiles">
+      <a class="tile" href="#ayudar" style="background-image:url('/static/edu.jpg')">
+        <div class="tbar">Cómo ayudar</div>
+        <div class="tbar2">Información</div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="tile" href="#noticias" style="background-image:url('/static/campo.jpg')">
+        <div class="tbar">Noticias</div>
+        <div class="tbar2">Actividades</div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="tile" href="#contacto" style="background-image:url('/static/hero-3.jpg')">
+        <div class="tbar">Contacto</div>
+        <div class="tbar2">Comunicación</div>
+        <div class="arrow">→</div>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" id="ayudar">
+    <h2>Cómo ayudar</h2>
+    <p class="lead">Texto de referencia. Formas de apoyar.</p>
+    <div class="help-grid">
+      <form class="help-card" id="donateForm">
+        <strong>Donar</strong>
+        <p class="hint">Texto de referencia. Aporte.</p>
+        <div class="amount-row" id="amounts">
+          <button type="button" data-amount="20000">$20.000</button>
+          <button type="button" data-amount="50000" class="selected">$50.000</button>
+          <button type="button" data-amount="100000">$100.000</button>
+          <button type="button" data-amount="otro">Otro</button>
+        </div>
+        <div class="field" id="customAmountWrap" hidden>
+          <label for="customAmount">Monto (COP)</label>
+          <input id="customAmount" type="number" min="10000" step="1000" placeholder="80000">
+        </div>
+        <div class="field">
+          <label for="donorName">Nombre</label>
+          <input id="donorName" required placeholder="Tu nombre">
+        </div>
+        <div class="field">
+          <label for="donorEmail">Correo</label>
+          <input id="donorEmail" type="email" required placeholder="tu@correo.com">
+        </div>
+        <button class="btn wide" type="submit">Registrar apoyo</button>
+        <p class="hint" id="donateMsg"></p>
+      </form>
+
+      <form class="help-card" id="volunteerForm">
+        <strong>Voluntariado</strong>
+        <p class="hint">Texto de referencia.</p>
+        <div class="field">
+          <label for="volName">Nombre</label>
+          <input id="volName" required>
+        </div>
+        <div class="field">
+          <label for="volRole">Área</label>
+          <select id="volRole">
+            <option>Área 1</option>
+            <option>Área 2</option>
+            <option>Área 3</option>
+            <option>Área 4</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="volNote">Mensaje</label>
+          <textarea id="volNote" rows="3" placeholder="Mensaje"></textarea>
+        </div>
+        <button class="btn wide" type="submit">Enviar postulación</button>
+        <p class="hint" id="volMsg"></p>
+      </form>
+
+      <div class="help-card">
+        <strong>Aliados</strong>
+        <p>Texto de referencia.</p>
+        <button class="btn wide ghost" type="button" id="allyBtn">Solicitar información</button>
+        <p class="hint"><a href="mailto:correo@dominio.com">correo@dominio.com</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="noticias">
+    <h2>Noticias y actividades</h2>
+    <p class="lead">Texto de referencia.</p>
+    <div class="amount-row" id="newsFilter" style="max-width:1180px;margin:0 auto 18px">
+      <button type="button" class="selected" data-filter="todas">Todas</button>
+      <button type="button" data-filter="educacion">Educación</button>
+      <button type="button" data-filter="campo">Campo</button>
+      <button type="button" data-filter="territorio">Territorio</button>
+    </div>
+    <div class="news-grid" id="newsGrid"></div>
+  </section>
+
+  <section class="section" id="contacto">
+    <h2>Contacto</h2>
+    <p class="lead">Texto de referencia.</p>
+    <div class="contact-wrap">
+      <form class="panel" id="contactForm">
+        <div class="field">
+          <label for="cName">Nombre</label>
+          <input id="cName" required>
+        </div>
+        <div class="field">
+          <label for="cEmail">Correo</label>
+          <input id="cEmail" type="email" required>
+        </div>
+        <div class="field">
+          <label for="cMsg">Mensaje</label>
+          <textarea id="cMsg" rows="5" required minlength="12"></textarea>
+        </div>
+        <button class="btn wide" type="submit">Enviar mensaje</button>
+        <p class="hint" id="contactMsg"></p>
+      </form>
+      <div class="panel">
+        <h3>Sede y canales</h3>
+        <p>Ciudad, país<br>Horario</p>
+        <p><a href="tel:+570000000000">+57 000 000 0000</a><br>
+        <a href="mailto:correo@dominio.com">correo@dominio.com</a></p>
+        <p class="hint">Texto de referencia.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-logo" aria-hidden="true"></div>
+    <div class="footer-lines">
+      <a href="#quienes">Información</a>
+      <a href="#ayudar">Ayuda</a>
+      <a href="#noticias">Noticias</a>
+      <a href="#contacto">Contacto</a>
+      <a href="/admin">Acceso interno</a>
+    </div>
+    <div class="social">
+      <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+      <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+      <a href="https://x.com" target="_blank" rel="noopener" aria-label="X">X</a>
+      <a href="#" aria-label="WhatsApp">WA</a>
+    </div>
+    <form class="news-form" id="newsletterForm">
+      <input type="email" id="nlEmail" required placeholder="Tu correo" aria-label="Correo para boletín">
+      <button type="submit" aria-label="Suscribirse">→</button>
+    </form>
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+<div class="modal" id="allyModal" role="dialog" aria-modal="true" aria-labelledby="allyTitle">
+  <div class="modal-card">
+    <button class="close-x" id="closeAlly" aria-label="Cerrar">×</button>
+    <h3 id="allyTitle">Convenio de aliados</h3>
+    <form id="allyForm">
+      <div class="field">
+        <label for="orgName">Organización</label>
+        <input id="orgName" required>
+      </div>
+      <div class="field">
+        <label for="orgEmail">Correo institucional</label>
+        <input id="orgEmail" type="email" required>
+      </div>
+      <button class="btn wide" type="submit">Enviar solicitud</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
+  async function postJson(url, body) {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json().catch(() => ({ ok: false, error: 'Sin respuesta' }));
+    if (!res.ok || !data.ok) throw new Error(data.error || 'No se pudo enviar');
+    return data;
+  }
+
+  const toastEl = $('#toast');
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(() => toastEl.classList.remove('show'), 2800);
+  }
+
+  const menuBtn = $('#menuBtn');
+  const navlinks = $('#navlinks');
+  menuBtn.addEventListener('click', () => navlinks.classList.toggle('open'));
+  navlinks.addEventListener('click', (e) => {
+    if (e.target.matches('a')) navlinks.classList.remove('open');
+  });
+
+  const sections = $$('section[id]');
+  const navAnchors = $$('[data-nav]');
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      navAnchors.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach((s) => spy.observe(s));
+
+  const slides = $$('.hero-slide');
+  const dotsWrap = $('#heroDots');
+  let slide = 0;
+  slides.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', 'Ir a foto ' + (i + 1));
+    if (i === 0) b.classList.add('active');
+    b.addEventListener('click', () => go(i));
+    dotsWrap.appendChild(b);
+  });
+  function go(i) {
+    slide = i;
+    slides.forEach((s, n) => s.classList.toggle('active', n === i));
+    $$('#heroDots button').forEach((d, n) => d.classList.toggle('active', n === i));
+  }
+  setInterval(() => go((slide + 1) % slides.length), 5500);
+
+  const counters = $$('[data-count]');
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const end = Number(el.dataset.count);
+      const start = performance.now();
+      const dur = 1100;
+      function tick(now) {
+        const p = Math.min(1, (now - start) / dur);
+        el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3))).toLocaleString('es-CO');
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      countObs.unobserve(el);
+    });
+  }, { threshold: 0.4 });
+  counters.forEach((c) => countObs.observe(c));
+
+  let amount = 50000;
+  $('#amounts').addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    $$('#amounts button').forEach((b) => b.classList.toggle('selected', b === btn));
+    const custom = btn.dataset.amount === 'otro';
+    $('#customAmountWrap').hidden = !custom;
+    amount = custom ? Number($('#customAmount').value || 0) : Number(btn.dataset.amount);
+  });
+  $('#customAmount')?.addEventListener('input', (e) => { amount = Number(e.target.value || 0); });
+
+  $('#donateForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = $('#donorName').value.trim();
+    const email = $('#donorEmail').value.trim();
+    $('#donateMsg').textContent = '';
+    try {
+      await postJson('/api/donacion', { name, email, amount });
+      $('#donateMsg').textContent = 'Registro enviado.';
+      $('#donateMsg').className = 'ok';
+      toast('Registro enviado');
+      e.target.reset();
+    } catch (err) {
+      $('#donateMsg').textContent = err.message;
+      $('#donateMsg').className = 'err';
+    }
+  });
+
+  $('#volunteerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    $('#volMsg').textContent = '';
+    try {
+      await postJson('/api/voluntariado', {
+        name: $('#volName').value.trim(),
+        role: $('#volRole').value,
+        note: $('#volNote').value.trim()
+      });
+      $('#volMsg').textContent = 'Registro enviado.';
+      $('#volMsg').className = 'ok';
+      toast('Registro enviado');
+      e.target.reset();
+    } catch (err) {
+      $('#volMsg').textContent = err.message;
+      $('#volMsg').className = 'err';
+    }
+  });
+
+  const modal = $('#allyModal');
+  $('#allyBtn').addEventListener('click', () => modal.classList.add('open'));
+  $('#closeAlly').addEventListener('click', () => modal.classList.remove('open'));
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+  $('#allyForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      await postJson('/api/aliado', {
+        org: $('#orgName').value.trim(),
+        email: $('#orgEmail').value.trim()
+      });
+      modal.classList.remove('open');
+      toast('Registro enviado');
+      e.target.reset();
+    } catch (err) {
+      toast(err.message);
+    }
+  });
+
+  let NEWS = [];
+  const newsGrid = $('#newsGrid');
+  function renderNews(filter='todas') {
+    const items = NEWS.filter((n) => filter === 'todas' || n.cat === filter);
+    newsGrid.innerHTML = items.map((n) => `
+      <article class="news-card">
+        <img src="${n.img}" alt="">
+        <div>
+          <time datetime="${n.date}">${new Date(n.date + 'T00:00:00').toLocaleDateString('es-CO', { day:'numeric', month:'short', year:'numeric' })}</time>
+          <h3>${n.title}</h3>
+          <p>${n.text}</p>
+        </div>
+      </article>`).join('') || '<p class="hint">Sin noticias.</p>';
+  }
+  fetch('/api/noticias').then((r) => r.json()).then((data) => {
+    NEWS = Array.isArray(data) ? data : [];
+    renderNews();
+  }).catch(() => renderNews());
+  $('#newsFilter').addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    $$('#newsFilter button').forEach((b) => b.classList.toggle('selected', b === btn));
+    renderNews(btn.dataset.filter);
+  });
+
+  $('#contactForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    $('#contactMsg').textContent = '';
+    try {
+      await postJson('/api/contacto', {
+        name: $('#cName').value.trim(),
+        email: $('#cEmail').value.trim(),
+        msg: $('#cMsg').value.trim()
+      });
+      $('#contactMsg').textContent = 'Registro enviado.';
+      $('#contactMsg').className = 'ok';
+      toast('Registro enviado');
+      $('#cMsg').value = '';
+    } catch (err) {
+      $('#contactMsg').textContent = err.message;
+      $('#contactMsg').className = 'err';
+    }
+  });
+
+  $('#newsletterForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      await postJson('/api/boletin', { email: $('#nlEmail').value.trim() });
+      toast('Registro enviado');
+      e.target.reset();
+    } catch (err) {
+      toast(err.message);
+    }
+  });
+</script>
+</body>
+</html>
